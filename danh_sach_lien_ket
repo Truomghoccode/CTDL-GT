@@ -1,0 +1,149 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node{
+	int data;
+	struct node *next;
+}node;
+
+node *newnode(int x){
+	node *newnode = (node*)malloc(sizeof(node));
+	newnode->data = x;
+	newnode->next = NULL;
+	return newnode;
+}
+
+void xoa(node **head,int n){
+    node *cur = *head;
+	int k ; printf("nhap vi tri muon xoa: ");scanf("%d",&k);
+    if(k < 0 || k >= n){
+        printf("Vi tri khong hop le!\n");
+        return;
+    }
+    if(k == 0){
+        *head = cur->next;
+        free(cur);
+    }
+    else{
+        for(int i = 0 ; i < k-1 ; i++){
+            cur = cur->next;
+        }
+        node *xoa = cur->next;
+        cur->next = cur->next->next;
+        free(xoa);
+    }
+	node *tmp =*head;
+	printf("Danh sach lien ket:\n");
+	for(int i = 0 ; i < n-1 ; i++){
+		printf("%d ",tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void them(node **head , int n){
+    node *cur = *head ;
+    node *nnode =(node*)malloc(sizeof(node));
+    printf("Nhap gia tri muon chen: ");scanf("%d",&nnode->data);
+	int k ; printf("nhap vi tri muon chen: ");scanf("%d",&k);
+    if(k < 1 || k > n+1){
+        printf("Vi tri khong hop le!\n");
+        return;
+    }
+    if(k == 1){
+        nnode->next = cur;
+        *head = nnode;
+    }
+    else if(k == n+1){
+        for(int i = 0 ; i < n-1 ; i++){
+            cur = cur->next;
+        }
+        cur->next = nnode;
+        cur->next->next = NULL;
+    }
+    else if(k > 1 && k <= n){
+        for(int i = 1 ; i < k-1 ; i++){
+            cur = cur ->next;
+        }
+        nnode->next = cur->next ;
+        cur->next = nnode;
+    }
+	node *tmp =*head;
+	printf("Danh sach lien ket:\n");
+	for(int i = 0 ; i < n+1 ; i++){
+		printf("%d ",tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void max(node *head, int  n){
+	node *cur = head,*max = head;
+	cur = cur->next;
+	for(int i = 2 ; i <= n ; i++){
+		if(cur->data > max->data) max = cur;
+		cur = cur->next;
+	}
+	printf("gia tri lon nhat trong danh sach la: %d\n",max->data);
+}
+
+void tim(node *head ,int n){
+	node *tim =(node *) malloc(sizeof(node));
+	printf("Nhap gia tri can tim:");scanf("%d",&tim->data);
+	node *cur = head;
+	int vitri = 0, found=0;;
+	for(int i = 0 ; i < n ; i++){
+		if(cur->data == tim->data){
+			printf("Da tim thay gia tri can tim tai lan dau tai vi tri so %d\n",vitri);
+			found=1;;
+			break;
+		}
+		else{
+			cur = cur->next;
+			vitri++;
+		}
+	}
+	if(found==0) printf("Khong tim thay gia tri can tim trong danh sach\n");
+}
+
+void in(int n , node *head){
+	node *cur=head;;
+	printf("Danh sach lien ket:\n");
+	for(int i=0;i<n;i++){
+		printf("%d ",cur->data);
+		cur=cur->next;;
+	}
+}
+
+int main(){
+	int n;scanf("%d",&n);;
+	int x;;
+	node*head=NULL,*nnode,*lnode;;
+	printf("Nhap danh sach lien ket:\n");;
+	for(int i=0;i<n;i++){
+		scanf("%d",&x);;
+		nnode=newnode(x);;
+		if(head==NULL){
+			head=nnode;;
+			lnode=nnode;;
+		}
+		else{
+			lnode->next=nnode;;
+			lnode=nnode;;
+		}
+	}
+	int a;printf("Nhap chuong trinh cho danh sach:\n1:Them phan tu\n2:Xoa phan tu\n3:Tim phan tu lon nhat\n4:Tim gia tri\n5:Bo qua\n");;
+	do{
+		scanf("%d",&a);;
+	}while(a>5);;
+	if(a==1) them(&head,n);;
+	if(a==2) xoa(&head,n);;
+	if(a==3){
+		max(head,n);;
+		in(n,head);;
+	}
+	if(a==4){
+		tim(head,n);;
+		in(n,head);;
+	}
+	
+	return 0;;
+}
