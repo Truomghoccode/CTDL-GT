@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct node{
+    int data;
+    struct node *next;
+}node;
+
+node *createnode(int x){
+    node *newnode = (node*)malloc(sizeof(node));
+    newnode->data = x;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void push(node **head, int x,int n){
+    node *nnode =(node*)malloc(sizeof(node));
+    printf("Nhap gia tri muon push:");scanf("%d",&nnode->data);
+    node *cur = *head;
+    if(head ==NULL) cur = nnode;
+    else{
+        nnode->next = *head;
+        *head =  nnode;
+    }
+    node *tmp =*head;
+	printf("Danh sach lien ket:\n");
+	for(int i = 0 ; i < n+1 ; i++){
+		printf("%d ",tmp->data);
+		tmp = tmp->next;
+	}
+}
+
+void pop(node **head , int n){
+    if(*head == NULL) return;
+    node *tmp = *head;
+    if(*head != NULL){
+        *head = (*head)->next;
+        free(tmp);
+    }
+    node *cur =*head;
+	printf("Danh sach lien ket:\n");
+	for(int i = 0 ; i < n-1 ; i++){
+		printf("%d ",cur->data);
+		cur = cur->next;
+	}
+}
+
+void top(node **head){
+    node *cur = *head;
+    if(cur == NULL) printf("Stack is empty\n");
+    else printf("%d",cur->data);
+}
+
+void in(int n , node *head){
+	node *cur=head;;
+	printf("Danh sach lien ket:\n");
+	for(int i=0;i<n;i++){
+		printf("%d ",cur->data);
+		cur=cur->next;;
+	}
+}
+
+
+int main(){
+    int n;scanf("%d",&n);
+	int x;
+	node*head=NULL,*nnode,*lnode;
+	printf("Nhap danh sach lien ket:\n");
+	for(int i=0;i<n;i++){
+		scanf("%d",&x);
+		nnode = createnode(x);
+		if(head==NULL){
+			head=nnode;
+			lnode=nnode;
+		}
+		else{
+			lnode->next=nnode;
+			lnode=nnode;
+		}
+	}
+    int a;printf("Nhap chuong trinh cho ngan xep:\n1:Push\n2:Pop\n3:Top\n4:Bo qua\n");
+	do{
+		scanf("%d",&a);
+	}while(a>4);
+
+    if(a==1){
+        push(&head,x,n);
+    }
+    else if(a==2){
+        pop(&head,n);
+    }
+    else if(a==3) top(&head);
+    else if(a ==4) in(n,head);
+}
